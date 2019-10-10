@@ -486,9 +486,11 @@ func (c *Conn) loop() {
 		case err == ErrSessionExpired:
 			c.logger.Printf("authentication failed: %s", err)
 			c.invalidateWatches(err)
+			return
 		case err != nil && c.conn != nil:
 			c.logger.Printf("authentication failed: %s", err)
 			c.conn.Close()
+			return
 		case err == nil:
 			if c.logInfo {
 				c.logger.Printf("authenticated: id=%d, timeout=%d", c.SessionID(), c.sessionTimeoutMs)
